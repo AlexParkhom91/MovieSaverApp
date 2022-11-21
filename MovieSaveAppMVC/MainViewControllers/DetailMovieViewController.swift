@@ -51,7 +51,7 @@ final class DetailMovieViewController: UIViewController {
         addScrollViewConstraint()
         addViewForScrollViewConstraint()
         addNameMovieLabelConstraint()
-        addRatingAndYearLabelConstraint()
+        addRatingConstraint()
         addDescriptionTextViewConstraint()
         addTrailerWebViewConstraint()
         addDateLabelConstraint()
@@ -108,7 +108,7 @@ final class DetailMovieViewController: UIViewController {
         starImage.heightAnchor.constraint(equalToConstant: 16).isActive = true
     }
 
-    private func addRatingAndYearLabelConstraint() {
+    private func addRatingConstraint() {
         ratingLabel.translatesAutoresizingMaskIntoConstraints = false
         ratingLabel.topAnchor.constraint(equalTo: nameMovieLabel.bottomAnchor, constant: 14).isActive = true
         ratingLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 46).isActive = true
@@ -131,17 +131,13 @@ final class DetailMovieViewController: UIViewController {
         descriptionTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 19).isActive = true
         descriptionTextView.heightAnchor.constraint(equalToConstant: 138).isActive = true
     }
-
     private func addTrailerWebViewConstraint() {
         trailerWebView.translatesAutoresizingMaskIntoConstraints = false
         trailerWebView.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: 24).isActive = true
         trailerWebView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 19).isActive = true
         trailerWebView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -19).isActive = true
-        trailerWebView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30).isActive = true
+        trailerWebView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -52).isActive = true
     }
-
-    // MARK: - Setups
-
     // MARK: Private
 
     private func addSubviews() {
@@ -161,7 +157,7 @@ final class DetailMovieViewController: UIViewController {
         addMainViewUI()
         addMovieImageUI()
         addNameMovieLabelUI()
-        addRatingAndYearLabelUI()
+        addRatingLabelUI()
         addDescriptionTextViewUI()
         addStarImage()
     }
@@ -169,22 +165,19 @@ final class DetailMovieViewController: UIViewController {
     private func addMovieImageUI() {
         movieImage.contentMode = .scaleAspectFill
     }
-
     private func addMainViewUI() {
         mainView.layer.cornerRadius = 16
         mainView.backgroundColor = .white
     }
-
     private func addNameMovieLabelUI() {
         nameMovieLabel.numberOfLines = 2
         nameMovieLabel.textColor = .black
         nameMovieLabel.font = UIFont(name: "Manrope-Light", size: 24)
     }
 
-    private func addRatingAndYearLabelUI() {
+    private func addRatingLabelUI() {
         ratingLabel.textColor = .black
     }
-
     private func addDescriptionTextViewUI() {
         descriptionTextView.textColor = .black
         descriptionTextView.font = UIFont(name: "Manrope-Light", size: 14)

@@ -40,7 +40,7 @@ final class MovieInfoTableViewCell: UITableViewCell {
 
     func setInfoMovie(NameMovie name: String, RatingMovie rating: String, ImageMovie image: Data) {
         nameMovieLabel.text = name
-        ratingMovieLabel.text = rating
+        ratingMovieLabel.text = "\(rating)/10"
         movieImageView.image = UIImage(data: image)
     }
 
