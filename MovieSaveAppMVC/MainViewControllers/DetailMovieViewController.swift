@@ -136,7 +136,7 @@ final class DetailMovieViewController: UIViewController {
         trailerWebView.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: 24).isActive = true
         trailerWebView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 19).isActive = true
         trailerWebView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -19).isActive = true
-        trailerWebView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30).isActive = true
+        trailerWebView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -52).isActive = true
     }
     // MARK: Private
 
