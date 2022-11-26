@@ -1,34 +1,20 @@
-//
-//  MovieInfoTableViewCell.swift
-//  MovieSaveAppMVC
-//
-//  Created by Александр Пархамович on 17.11.22.
-//
 import UIKit
 
-final class MovieInfoTableViewCell: UITableViewCell {
-    // MARK: - Identifier
-
-    static let identifier = "MovieInfoTableViewCell"
-
-    // MARK: - Properties
+final class MovieListTableCustomCell: UITableViewCell {
 
     // MARK: Private
+    private let filmImage = UIImageView()
+    private let filmNameLabel = UILabel()
+    private let ratingLabel = UILabel()
+    private let numberTenLabel = UILabel()
+    private let infoView = UIView()
 
-    private var movieImageView = UIImageView()
-    private var nameMovieLabel = UILabel()
-    private var ratingMovieLabel = UILabel()
-    private let mainView = UIView()
-    private let infoMovieStackView = UIStackView()
-    private let mainStackView = UIStackView()
-
-    // MARK: - LIfecycle
-
+    // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addAllSubviews()
-        addConstraints()
-        addSetupsUI()
+        super.init(style: .default, reuseIdentifier: .identifire)
+        setupSubviews()
+        setupConstraints()
+        configureUI()
     }
 
     @available(*, unavailable)
@@ -36,110 +22,62 @@ final class MovieInfoTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - API
-
-    func setInfoMovie(NameMovie name: String, RatingMovie rating: String, ImageMovie image: Data) {
-        nameMovieLabel.text = name
-        ratingMovieLabel.text = "\(rating)/10"
-        movieImageView.image = UIImage(data: image)
-    }
-
-    // MARK: - Constraints
-
-    // MARK: Private
-
-    private func addConstraints() {
-        addMainViewConstarint()
-        addMainStackViewConstraint()
-        addNameMovieLabelConstraint()
-    }
-
-    private func addMainViewConstarint() {
-        mainView.translatesAutoresizingMaskIntoConstraints = false
-        mainView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
-        mainView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
-        mainView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
-        mainView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
-    }
-
-    private func addMainStackViewConstraint() {
-        mainStackView.translatesAutoresizingMaskIntoConstraints = false
-        mainStackView.topAnchor.constraint(equalTo: mainView.topAnchor).isActive = true
-        mainStackView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor).isActive = true
-        mainStackView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor).isActive = true
-        mainStackView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor).isActive = true
-    }
-
-    private func addNameMovieLabelConstraint() {
-        nameMovieLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameMovieLabel.heightAnchor.constraint(equalTo: infoMovieStackView.heightAnchor, multiplier: 0.6).isActive = true
-    }
-
     // MARK: - Setups
-
-    // MARK: Private
-
-    private func addAllSubviews() {
-        contentView.addSubview(mainView)
-        mainView.addSubview(mainStackView)
-        mainStackView.addArrangedSubview(movieImageView)
-        mainStackView.addArrangedSubview(infoMovieStackView)
-        infoMovieStackView.addArrangedSubview(nameMovieLabel)
-        infoMovieStackView.addArrangedSubview(ratingMovieLabel)
+    // MARK: - Setups
+    private func setupSubviews() {
+        contentView.addSubview(infoView)
+        [filmImage, filmNameLabel, ratingLabel, numberTenLabel].forEach { infoView.addSubview($0) }
     }
 
-    private func addSetupsUI() {
-        addContentViewUI()
-        addMainViewUI()
-        addMovieImageViewUI()
-        addMainStackViewUI()
-        addInfoMovieStackViewUI()
-        addNameMovieLabelUI()
-        addRatingMovieLabelUI()
+    private func setupConstraints() {
+        [infoView, filmImage, filmNameLabel, ratingLabel, numberTenLabel].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+        NSLayoutConstraint.activate([
+            infoView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            infoView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            infoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            infoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+
+            filmImage.leadingAnchor.constraint(equalTo: infoView.leadingAnchor),
+            filmImage.widthAnchor.constraint(equalToConstant: 195),
+            filmImage.heightAnchor.constraint(equalTo: infoView.heightAnchor),
+
+            filmNameLabel.leadingAnchor.constraint(equalTo: filmImage.trailingAnchor, constant: 15),
+            filmNameLabel.trailingAnchor.constraint(equalTo: infoView.trailingAnchor, constant: -15),
+            filmNameLabel.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 34),
+            filmNameLabel.heightAnchor.constraint(equalTo: infoView.heightAnchor, multiplier: 1 / 2),
+
+            ratingLabel.topAnchor.constraint(equalTo: filmNameLabel.bottomAnchor, constant: 10),
+            ratingLabel.centerXAnchor.constraint(equalTo: filmNameLabel.centerXAnchor, constant: -15),
+            ratingLabel.widthAnchor.constraint(equalToConstant: 35),
+            ratingLabel.heightAnchor.constraint(equalToConstant: 30),
+
+            numberTenLabel.centerYAnchor.constraint(equalTo: ratingLabel.centerYAnchor),
+            numberTenLabel.leadingAnchor.constraint(equalTo: ratingLabel.trailingAnchor),
+            numberTenLabel.widthAnchor.constraint(equalToConstant: 30),
+            numberTenLabel.heightAnchor.constraint(equalToConstant: 30)
+        ])
     }
 
-    private func addContentViewUI() {
-        contentView.backgroundColor = UIColor(red: 0.898, green: 0.898, blue: 0.898, alpha: 1)
+    private func configureUI() {
+        [filmNameLabel, ratingLabel].forEach { $0.textAlignment = .center }
+        [filmNameLabel, ratingLabel].forEach { $0.font = UIFont(name: "Manrope-Light", size: 18) }
+        [filmImage, infoView].forEach { $0.layer.cornerRadius = 10 }
+        filmNameLabel.numberOfLines = 4
+        ratingLabel.font = UIFont(name: "Manrope-Light", size: 16)
+        numberTenLabel.text = "/ 10"
+
+        filmImage.clipsToBounds = true
+        filmImage.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+
+        infoView.backgroundColor = .white
+        infoView.layer.shadowColor = UIColor.systemGray4.cgColor
+        infoView.layer.shadowOpacity = 1
+        infoView.layer.shadowRadius = 10
     }
 
-    private func addMovieImageViewUI() {
-        movieImageView.layer.cornerRadius = 10
-        movieImageView.clipsToBounds = true
-        movieImageView.contentMode = .scaleAspectFill
-    }
-
-    private func addMainViewUI() {
-        mainView.backgroundColor = .white
-        mainView.layer.cornerRadius = 10
-        mainView.layer.shadowOpacity = 1
-        mainView.layer.shadowRadius = 16
-        mainView.layer.shadowOffset = CGSize(width: 0, height: 0)
-        mainView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
-    }
-
-    private func addMainStackViewUI() {
-        mainStackView.axis = .horizontal
-        mainStackView.alignment = .fill
-        mainStackView.distribution = .fillEqually
-        mainStackView.layer.cornerRadius = 10
-    }
-
-    private func addInfoMovieStackViewUI() {
-        infoMovieStackView.axis = .vertical
-        infoMovieStackView.alignment = .center
-        infoMovieStackView.distribution = .fillProportionally
-    }
-
-    private func addNameMovieLabelUI() {
-        nameMovieLabel.textAlignment = .center
-        nameMovieLabel.textColor = .black
-        nameMovieLabel.font = UIFont(name: "Manrope-Medium", size: 18)
-        nameMovieLabel.numberOfLines = 3
-    }
-
-    private func addRatingMovieLabelUI() {
-        ratingMovieLabel.textAlignment = .center
-        ratingMovieLabel.textColor = .black
-        ratingMovieLabel.font = UIFont(name: "Manrope-Medium", size: 18)
+    func configureCell(image: UIImage?, name: String, rating: String) {
+        filmImage.image = image
+        filmNameLabel.text = name
+        ratingLabel.text = rating
     }
 }
