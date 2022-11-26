@@ -1,30 +1,34 @@
-import Foundation
 import UIKit
 
-final class СhangeDatePickerViewConrtoller: UIViewController {
-    // MARK: - Properties
-    // MARK: Public
-    weak var delegate: InfoFilmDelegate?
+protocol DateReleaseViewProtocol: AnyObject {}
 
-    // MARK: Private
-    private let releaseDateLabel = UILabel()
+final class DateReleaseViewController: UIViewController {
+    // MARK: - Public
+    var presenter: DateReleasePresenterProtocol!
+
+    // MARK: - Private
     private let datePicker = UIDatePicker()
+    private let releaseDateLabel = UILabel()
     private let saveButton = UIButton()
 
     // MARK: - Lifecycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        setupSubviews()
         setupConstraints()
-        setupUI()
+        configureUI()
+        setupBehavior()
     }
 
-    // MARK: - API
     // MARK: - Setups
+    // MARK: - Setup Subviews
+    private func setupSubviews() {
+        [releaseDateLabel, datePicker, saveButton].forEach { view.addSubview($0) }
+    }
+
+    // MARK: - Setup Constraints
     private func setupConstraints() {
-        // release label
-        view.addSubview(releaseDateLabel)
+
         releaseDateLabel.translatesAutoresizingMaskIntoConstraints = false
         releaseDateLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 150).isActive = true
         releaseDateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -32,7 +36,6 @@ final class СhangeDatePickerViewConrtoller: UIViewController {
         releaseDateLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
 
         // release date picker
-        view.addSubview(datePicker)
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.topAnchor.constraint(equalTo: releaseDateLabel.bottomAnchor, constant: 32).isActive = true
         datePicker.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
@@ -40,7 +43,6 @@ final class СhangeDatePickerViewConrtoller: UIViewController {
         datePicker.heightAnchor.constraint(equalToConstant: 194).isActive = true
 
         // save button
-        view.addSubview(saveButton)
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         saveButton.topAnchor.constraint(equalTo: datePicker.bottomAnchor, constant: 32).isActive = true
@@ -48,25 +50,32 @@ final class СhangeDatePickerViewConrtoller: UIViewController {
         saveButton.widthAnchor.constraint(equalToConstant: 79).isActive = true
     }
 
-    private func setupUI() {
+    // MARK: - Configure UI
+    private func configureUI() {
+        view.backgroundColor = .white
+
+        releaseDateLabel.font = UIFont(name: "Manrope-Light", size: 22)
         releaseDateLabel.text = "Release Date"
-        releaseDateLabel.textColor = .black
         releaseDateLabel.textAlignment = .center
-        releaseDateLabel.font = UIFont(name: "Manrope-Medium", size: 22)
-        //
-        datePicker.preferredDatePickerStyle = .wheels
-        datePicker.datePickerMode = .date
-        //
+        releaseDateLabel.textColor = .black
+
         saveButton.setTitle("Save", for: .normal)
-        saveButton.backgroundColor = .white
         saveButton.setTitleColor(.systemBlue, for: .normal)
         saveButton.titleLabel?.font = UIFont(name: "Manrope-Medium", size: 18)
-        saveButton.addTarget(self, action: #selector(saveButtonClick), for: .touchUpInside)
     }
 
-    @objc private func saveButtonClick() {
-        delegate?.filmDateDelegate(datePicker.date)
-        navigationController?.popViewController(animated: true)
+    // MARK: - Setup Behavior
+    private func setupBehavior() {
+        saveButton.addTarget(self, action: #selector(saveButtonDidTapped), for: .touchUpInside)
+        datePicker.preferredDatePickerStyle = .wheels
+        datePicker.datePickerMode = .date
     }
-    // MARK: - Helpers
+
+    @objc private func saveButtonDidTapped() {
+        presenter.backToNewFilmView()
+        presenter.selectedDateCallback?(datePicker.date)
+    }
 }
+
+// MARK: - ReleaseDateProtocol
+extension DateReleaseViewController: DateReleaseViewProtocol {}
